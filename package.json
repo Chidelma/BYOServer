@@ -1,0 +1,9 @@
+{
+  "name": "@vyckr/byosijs",
+  "version": "0.1.0",
+  "dependencies": {
+    "glob-to-regexp": "^0.4.1",
+    "localforage": "1.10.0"
+  },
+  "type": "module"
+}
