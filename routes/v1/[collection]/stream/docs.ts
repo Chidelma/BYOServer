@@ -19,7 +19,7 @@ export default class {
 
                         yield JSON.stringify(doc)
 
-                    } else yield data
+                    } else yield data 
                 }
             }
         }
