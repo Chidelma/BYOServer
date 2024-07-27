@@ -13,7 +13,14 @@ export default class {
 
                 for await (const data of Silo.getDoc<Record<string, any>>(slugs!.get("[primary]"), _id, onlyId)) {
                     
-                    if(data instanceof Map) JSON.stringify(Object.fromEntries(data))
+                    if(data instanceof Map) {
+
+                        const doc: Record<string, any> = {}
+
+                        for (const [key, value] of data.entries()) doc[key] = value
+
+                        yield JSON.stringify(doc)
+                    }
                     else yield data
                 }
             }

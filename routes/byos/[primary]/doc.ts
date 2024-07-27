@@ -31,6 +31,6 @@ export default class Doc {
     @VALIDATE([{ type: "string" }, { type: "object" }])
     static async DELETE(id: _uuid, { slugs }: _HTTPContext) {
 
-        await Silo.delDoc(slugs!.get(Doc.colKey), id);
+        await Silo.delDoc(slugs!.get(Doc.colKey), id)
     }
 }
