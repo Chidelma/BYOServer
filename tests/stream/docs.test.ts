@@ -13,12 +13,6 @@ await fetch(`${urlPrefix}/${PHOTOS}/schema`, {
     method: "POST",
 })
 
-setTimeout(async () => {
-    await fetch(`${urlPrefix}/${PHOTOS}/docs`, {
-        method: "DELETE"
-    })
-}, 2500)
-
 describe("byos/[primary]/stream/docs", async () => {
 
     await fetch(`${urlPrefix}/${PHOTOS}/docs`, {
@@ -28,7 +22,7 @@ describe("byos/[primary]/stream/docs", async () => {
 
     test("GET", async () => {
 
-        const res = await fetch(`${urlPrefix}/${PHOTOS}/stream/docs?$onlyIds=true`)
+        const res = await fetch(`${urlPrefix}/${PHOTOS}/stream/docs`)
 
         expect(res.status).toEqual(200)
 
@@ -50,6 +44,10 @@ describe("byos/[primary]/stream/docs", async () => {
         })
 
         let count = 0
+
+        await fetch(`${urlPrefix}/${PHOTOS}/docs`, {
+            method: "DELETE"
+        })
 
         for await (const chunk of res.body!) {
             const decoded = new TextDecoder().decode(chunk)

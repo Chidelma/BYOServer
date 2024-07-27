@@ -20,13 +20,27 @@ const albumsResponse = await fetch(`${urlPrefix}/${ALBUMS}/docs`, {
 
 const albumIds = await albumsResponse.json()
 
-setTimeout(async () => {
-    await fetch(`${urlPrefix}/${ALBUMS}/doc/${albumIds[2]}`, {
-        method: "DELETE"
-    })
-}, 2500)
-
 describe("byos/[primary]/stream/doc", async () => {
+
+    test("DELETE", async () => {
+
+        const res = await fetch(`${urlPrefix}/${ALBUMS}/stream/doc/${albumIds[2]}`, {
+            method: "DELETE"
+        })
+
+        await fetch(`${urlPrefix}/${ALBUMS}/doc/${albumIds[2]}`, {
+            method: "DELETE"
+        })
+
+        let count = 0
+
+        for await (const _ of res.body!) {
+            count++
+            break
+        }
+        
+        expect(count).toEqual(1)
+    })
 
     test("GET", async () => {
 
@@ -36,29 +50,11 @@ describe("byos/[primary]/stream/doc", async () => {
 
         let count = 0
 
-        for await (const data of res.body!) {
-            console.log(data)
+        for await (const _ of res.body!) {
             count++
             break
         }
 
-        expect(count).toEqual(1)
-    })
-
-    test("DELETE", async () => {
-
-        const res = await fetch(`${urlPrefix}/${ALBUMS}/stream/doc/${albumIds[2]}`, {
-            method: "DELETE"
-        })
-
-        let count = 0
-
-        for await (const data of res.body!) {
-            console.log(data)
-            count++
-            break
-        }
-        
         expect(count).toEqual(1)
     })
 })
