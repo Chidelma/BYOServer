@@ -11,7 +11,7 @@ export default class {
 
             async *[Symbol.asyncIterator]() {
 
-                for await (const data of Silo.getDoc<Record<string, any>>(slugs!.get("[primary]"), _id, onlyId)) {
+                for await (const data of Silo.getDoc<Record<string, any>>(slugs.get("[primary]"), _id, onlyId)) {
                     
                     if(data instanceof Map) {
 
@@ -34,7 +34,7 @@ export default class {
 
             async *[Symbol.asyncIterator]() {
 
-                for await (const _ of Silo.getDoc(slugs!.get("[primary]"), _id).onDelete()) {
+                for await (const _ of Silo.getDoc(slugs.get("[primary]"), _id).onDelete()) {
                     yield _id
                 }
             }

@@ -7,16 +7,16 @@ export default class Schema {
 
     static async POST({ slugs }: _HTTPContext) {
 
-        await Silo.createSchema(slugs!.get(Schema.colKey))
+        await Silo.createSchema(slugs.get(Schema.colKey))
     }
 
     static async PATCH({ slugs }: _HTTPContext) {
 
-        await Silo.modifySchema(slugs!.get(Schema.colKey))
+        await Silo.modifySchema(slugs.get(Schema.colKey))
     }
 
     static DELETE({ slugs }: _HTTPContext) {
 
-        Silo.dropSchema(slugs!.get(Schema.colKey))
+        Silo.dropSchema(slugs.get(Schema.colKey))
     }
 }
