@@ -1,5 +1,4 @@
 import Silo from "@delma/byos";
-import { _HTTPContext } from "@delma/tachyon";
 import { VALIDATE } from "../../_utils/validation.js";
 
 export default class Docs {
@@ -9,13 +8,25 @@ export default class Docs {
     @VALIDATE([{ type: "object", default: {} }, { type: "object" }])
     static async GET(query: _storeQuery<Record<string, any>>, { slugs }: _HTTPContext) {
 
-        return await Silo.findDocs(slugs.get(Docs.colKey), query).collect()
+        const docs = query.$onlyIds ? new Array<any> : new Map()
+
+        for await (const data of Silo.findDocs(slugs.get(Docs.colKey), query).collect()) {
+
+            if(data instanceof Map) {
+                const doc = data as Map<any, any>
+                for(let [key, value] of doc) {
+                    (docs as Map<any, any>).set(key, value)
+                }
+            } else (docs as Array<any>).push(data as _ulid)
+        }
+
+        return docs
     }
 
     @VALIDATE([{ type: "object" }, { type: "object" }])
     static async POST(docs: Record<string, any>[], { slugs }: _HTTPContext) {
 
-        return await Silo.bulkDataPut(slugs.get(Docs.colKey), docs);
+        await Silo.batchPutData(slugs.get(Docs.colKey), docs);
     }
 
     @VALIDATE([{ type: "object" }, { type: "object" }])

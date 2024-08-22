@@ -1,35 +1,51 @@
-import { describe, test, expect } from "bun:test"
-import { mkdirSync, rmSync } from "node:fs"
-import { albums } from "./data.js"
-
-rmSync(process.env.DATA_PREFIX!, {recursive:true})
-mkdirSync(process.env.DATA_PREFIX!, {recursive:true})
+import { describe, test, expect, beforeAll, afterAll } from "bun:test"
+import { mkdir, rm } from "node:fs/promises"
+import { albumURL } from "../data.js"
 
 const ALBUMS = 'albums'
-
 const urlPrefix = `http://localhost:8000/byos`
+let albumIds: _ulid[] = []
 
-await fetch(`${urlPrefix}/${ALBUMS}/schema`, {
-    method: "POST",
+beforeAll(async () => {
+
+    await rm(process.env.DB_DIR!, {recursive:true})
+    await mkdir(process.env.DB_DIR!, {recursive:true})
+
+    await fetch(`${urlPrefix}/${ALBUMS}/schema`, {
+        method: "POST",
+    }) 
+
+    await fetch(`${urlPrefix}/${ALBUMS}/migrate`, {
+        method: "POST",
+        body: JSON.stringify({ url: albumURL, limit: 100 })
+    })
+
+    const urlParams = new URLSearchParams({
+        $limit: '3',
+        $onlyIds: 'true'
+    })
+
+    const res = await fetch(`${urlPrefix}/${ALBUMS}/docs?${urlParams.toString()}`)
+
+    albumIds = await res.json() as _ulid[]
 })
 
-const albumsResponse = await fetch(`${urlPrefix}/${ALBUMS}/docs`, {
-    method: "POST",
-    body: JSON.stringify(albums.slice(0, 25))
+afterAll(async () => {
+
+    await Promise.allSettled([rm(process.env.DB_DIR!, { recursive:true }), fetch(`${urlPrefix}/${ALBUMS}/schema`, { method: "DELETE" })])
 })
 
 describe("byos/[primary]/doc", async () => {
-
-    const albumIds = await albumsResponse.json()
 
     test("GET", async () => {
 
         const res = await fetch(`${urlPrefix}/${ALBUMS}/doc/${albumIds[0]}`)
 
+        expect(res.status).toEqual(200)
+
         const doc = await res.json()
 
         expect(Object.entries(doc).length).toEqual(1)
-        expect(res.status).toEqual(200)
     })
 
     test("POST", async () => {
@@ -43,10 +59,11 @@ describe("byos/[primary]/doc", async () => {
             })
         })
 
-        const uuid = await res.text()
-
-        expect(uuid).not.toBeNull()
         expect(res.status).toEqual(200)
+
+        const ulid = await res.text()
+
+        expect(ulid).not.toBeNull()
     })
 
     test("PATCH", async () => {

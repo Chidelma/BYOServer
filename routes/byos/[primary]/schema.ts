@@ -1,5 +1,4 @@
 import Silo from "@delma/byos";
-import { _HTTPContext } from "@delma/tachyon";
 
 export default class Schema {
 
@@ -15,8 +14,8 @@ export default class Schema {
         await Silo.modifySchema(slugs.get(Schema.colKey))
     }
 
-    static DELETE({ slugs }: _HTTPContext) {
+    static async DELETE({ slugs }: _HTTPContext) {
 
-        Silo.dropSchema(slugs.get(Schema.colKey))
+        await Silo.dropSchema(slugs.get(Schema.colKey))
     }
 }

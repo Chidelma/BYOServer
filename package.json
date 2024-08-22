@@ -1,11 +1,10 @@
 {
   "dependencies": {
-    "@delma/byos": "git+ssh://github.com/Chidelma/BYOS.git#staging",
-    "@delma/tachyon": "git+ssh://github.com/Chidelma/Tachyon.git#staging",
-    "bun-types": "^1.1.20"
+    "@delma/tachyon": "git+ssh://github.com/Chidelma/Tachyon.git#staging"
   },
   "devDependencies": {
-    "@types/node": "^16"
+    "@types/node": "^22.0.0",
+    "bun-types": "^1.1.21"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

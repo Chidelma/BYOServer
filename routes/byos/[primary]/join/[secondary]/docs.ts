@@ -1,5 +1,4 @@
 import Silo from "@delma/byos";
-import { _HTTPContext } from "@delma/tachyon";
 import { VALIDATE } from "../../../../_utils/validation.js";
 
 export default class Docs {

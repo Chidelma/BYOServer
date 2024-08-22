@@ -1,34 +1,36 @@
-import { describe, test, expect } from "bun:test"
-import { mkdirSync, rmSync } from "node:fs"
-import { photos } from "./data.js"
-
-rmSync(process.env.DATA_PREFIX!, {recursive:true})
-mkdirSync(process.env.DATA_PREFIX!, {recursive:true})
+import { describe, test, expect, beforeAll, afterAll } from "bun:test"
+import { mkdir, rm } from "node:fs/promises"
+import { photosURL } from "../data.js"
 
 const PHOTOS = 'photos'
 
 const urlPrefix = `http://localhost:8000/byos`
 
-await fetch(`${urlPrefix}/${PHOTOS}/schema`, {
-    method: "POST",
+beforeAll(async () => {
+
+    await rm(process.env.DB_DIR!, {recursive:true})
+    await mkdir(process.env.DB_DIR!, {recursive:true})
+
+    await fetch(`${urlPrefix}/${PHOTOS}/schema`, {
+        method: "POST",
+    }) 
+})
+
+afterAll(async () => {
+
+    await Promise.allSettled([rm(process.env.DB_DIR!, { recursive:true }), fetch(`${urlPrefix}/${PHOTOS}/schema`, { method: "DELETE" })])
 })
 
 describe("byos/[primary]/docs", async () => {
 
-    let albumIds: string[] = []
-
     test("POST", async () => {
 
-        const res = await fetch(`${urlPrefix}/${PHOTOS}/docs`, {
+        const res = await fetch(`${urlPrefix}/${PHOTOS}/migrate`, {
             method: "POST",
-            body: JSON.stringify(photos.slice(0, 25))
+            body: JSON.stringify({ url: photosURL, limit: 100 })
         })
 
         expect(res.status).toEqual(200)
-
-        albumIds = await res.json()
-
-        expect(albumIds.length).toEqual(25)
     })
 
     test("GET", async () => {
@@ -39,7 +41,7 @@ describe("byos/[primary]/docs", async () => {
 
         const results = await res.json()
 
-        expect(Object.entries(results).length).toEqual(25)
+        expect(Object.entries(results).length).toEqual(100)
     })
 
     test("PATCH", async () => {

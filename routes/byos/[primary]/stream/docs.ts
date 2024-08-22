@@ -1,5 +1,4 @@
 import Silo from "@delma/byos";
-import { _HTTPContext } from "@delma/tachyon";
 import { VALIDATE } from "../../../_utils/validation.js";
 
 export default class {
@@ -13,14 +12,9 @@ export default class {
 
                 for await (const data of Silo.findDocs(slugs.get("[primary]"), query)) {
 
-                    if(data instanceof Map) {
+                    await Bun.sleep(100)
 
-                        const doc: Record<string, any> = {}
-
-                        for (const [key, value] of data.entries()) doc[key] = value
-
-                        yield JSON.stringify(doc)
-                    } 
+                    if(data instanceof Map) yield JSON.stringify(Object.fromEntries(data))
                     else yield data 
                 }
             }
@@ -35,6 +29,7 @@ export default class {
             async *[Symbol.asyncIterator]() {
 
                 for await (const id of Silo.findDocs(slugs.get("[primary]"), query).onDelete()) {
+                    await Bun.sleep(100)
                     yield id
                 }
             }
