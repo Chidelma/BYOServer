@@ -1,19 +1,14 @@
 import { describe, test, expect, beforeAll, afterAll } from "bun:test"
 import { mkdir, rm } from "node:fs/promises"
-import { albumURL } from "../data.js"
+import { albumURL, urlPrefix } from "../data.js"
 
 const ALBUMS = 'albums'
-const urlPrefix = `http://localhost:8000/byos`
 let albumIds: _ulid[] = []
 
 beforeAll(async () => {
 
     await rm(process.env.DB_DIR!, {recursive:true})
     await mkdir(process.env.DB_DIR!, {recursive:true})
-
-    await fetch(`${urlPrefix}/${ALBUMS}/schema`, {
-        method: "POST",
-    }) 
 
     await fetch(`${urlPrefix}/${ALBUMS}/migrate`, {
         method: "POST",
@@ -31,7 +26,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-
     await Promise.allSettled([rm(process.env.DB_DIR!, { recursive:true }), fetch(`${urlPrefix}/${ALBUMS}/schema`, { method: "DELETE" })])
 })
 

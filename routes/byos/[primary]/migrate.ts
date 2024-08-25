@@ -5,7 +5,7 @@ export default class Migrate {
 
     private static colKey = "[primary]"
 
-    @VALIDATE([{ type: "string" }, { type: "object" }])
+    @VALIDATE([{ type: "object" }])
     static async GET({ slugs }: _HTTPContext) {
 
         return {

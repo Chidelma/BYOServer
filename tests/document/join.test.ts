@@ -1,25 +1,15 @@
 import { describe, test, expect, beforeAll, afterAll } from "bun:test"
 import { mkdir, rm } from "node:fs/promises"
-import { postsURL, albumURL } from "../data.js"
+import { postsURL, albumURL, urlPrefix } from "../data.js"
 
 const ALBUMS = 'albums'
 const POSTS = 'posts'
-
-const urlPrefix = `http://localhost:8000/byos`
 
 
 beforeAll(async () => {
 
     await rm(process.env.DB_DIR!, {recursive:true})
     await mkdir(process.env.DB_DIR!, {recursive:true})
-
-    await fetch(`${urlPrefix}/${ALBUMS}/schema`, {
-        method: "POST",
-    }) 
-
-    await fetch(`${urlPrefix}/${POSTS}/schema`, {
-        method: "POST",
-    }) 
 
     await fetch(`${urlPrefix}/${ALBUMS}/migrate`, {
         method: "POST",
