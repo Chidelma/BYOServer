@@ -1,4 +1,4 @@
-import Silo from "@delma/byos";
+import Silo from "@vyckr/byos";
 import { VALIDATE } from "../../_utils/validation.js";
 
 export default class Docs {

@@ -1,4 +1,4 @@
-import Silo from "@delma/byos";
+import Silo from "@vyckr/byos";
 
 export default class Schema {
 
