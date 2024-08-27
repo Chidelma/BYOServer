@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@delma/tachyon": "git+ssh://github.com/Chidelma/Tachyon.git#staging"
+    "@vyckr/tachyon": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -10,6 +10,25 @@
     "typescript": "^5.0.0"
   },
   "type": "module",
-  "name": "@delma/byoserver",
-  "version": "0.0.1"
+  "name": "@vyckr/byoserver",
+  "version": "0.1.0",
+  "author": "Chidelma",
+  "description": "A simple server for BYOS",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chidelma/BYOServer.git"
+  },
+  "keywords": [
+    "BYOServer",
+    "BYOS",
+    "database",
+    "bun",
+    "serverless",
+    "lambda",
+    "tachyon"
+  ],
+  "bugs": {
+    "url": "https://github.com/Chidelma/BYOServer/issues"
+  }
 }
