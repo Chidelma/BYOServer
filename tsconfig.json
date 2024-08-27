@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+      "strict": true,
+      "outDir": "bin",
+      "target": "ESNext",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "sourceMap": true,
+      "experimentalDecorators": true,
+      "pretty": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitReturns": true,
+      "forceConsistentCasingInFileNames": true,
+      "types": ["bun-types", "node", "@delma/byos", "@delma/tachyon"],
+      "isolatedModules": true
+  }
+}
