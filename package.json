@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@vyckr/tachyon": "^0.1.0"
+    "@vyckr/tachyon": "^0.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
