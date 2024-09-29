@@ -1,5 +1,5 @@
 import Silo from "@vyckr/byos";
-import { VALIDATE } from "../../../../_utils/validation.js";
+import { VALIDATE } from "../../../../../utils/validation.js";
 
 export default class Docs {
 
